@@ -1,0 +1,56 @@
+.container {
+  box-sizing: border-box;
+  padding: 0 2rem;
+  max-height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+.camControl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+}
+
+.camControl > iframe {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+}
+
+.carControl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 40vh;
+  /* position: relative; */
+}
+
+.middleButton > button:first-child {
+  background-color: red;
+  margin-right: 120px;
+}
+
+.middleButton > button:last-child {
+  background-color: blue;
+  margin-left: 120px;
+}
+
+.stop {
+  position: absolute;
+  right: 4rem;
+  top: 65vh;
+}
+
+.stop > button {
+  padding: 16px;
+  background-color: rgb(190, 0, 0);
+  color: white;
+  width: 80px;
+  outline: none;
+  border: none;
+  border-radius: 8%;
+  font-weight: bold;
+}

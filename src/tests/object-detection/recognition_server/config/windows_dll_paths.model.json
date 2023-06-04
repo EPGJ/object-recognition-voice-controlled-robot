@@ -1,0 +1,5 @@
+{
+    "cuda": "<CUDA-BINARIES-PATH>",
+    "darknet": "<DARKNET-BINARIES-PATH>",
+    "opencv": "<OPENCV-BINARIES-PATH>"
+}

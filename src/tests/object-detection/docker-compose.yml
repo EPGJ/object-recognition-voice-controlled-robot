@@ -1,0 +1,35 @@
+version: '3'
+services:
+  app:
+    build: recognition_server
+    ports:
+      - "65431:65431"
+      - "65432:65432"
+    # environment:
+    #   - CELERY_BROKER_URL=amqp://user:password@rabbitmq:5672
+    # volumes:
+    #   - ./app:/app
+    # depends_on:
+    #   - rabbitmq
+  # worker:
+  #   build: .
+  #   image: test/worker:latest
+  #   command: celery worker -A app.celery --loglevel=info
+  #   environment:
+  #     - CELERY_BROKER_URL=amqp://user:password@rabbitmq:5672
+  #     - CELERY_RESULT_BACKEND=redis://redis:6379/0
+  #   volumes:
+  #     - ./app:/app
+  #   depends_on:
+  #     - rabbitmq
+  #     - redis
+  # rabbitmq:
+  #   image: rabbitmq:3-management-alpine
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER=user
+  #     - RABBITMQ_DEFAULT_PASS=password
+  #   ports:
+  #     - "15672:15672"
+  #     - "5672:5672"
+  # redis:
+  #   image: redis:alpine

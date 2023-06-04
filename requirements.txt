@@ -1,0 +1,4 @@
+google-cloud-speech
+wavio
+scipy
+sounddevice
