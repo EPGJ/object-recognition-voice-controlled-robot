@@ -62,16 +62,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.camControl}>
-        <iframe src="http://192.168.0.104/" frameborder="0"></iframe>
+        <iframe src="http://192.168.100.138/" frameborder="0"></iframe>
       </div>
       <Joystick
         size={100}
         sticky={true}
-        baseColor="red"
-        stickColor="blue"
+        baseColor="rgb(241, 71, 71)"
+        stickColor="rgb(90, 88, 88)"
         move={handleMove}
         stop={handleStop}
       ></Joystick>
+      <div className={styles.voiceButton}>
+        <button onClick={() => console.log("voice")}>Voice</button>
+      </div>
 
       <div className={styles.carControl}>
         <div className={styles.upperButton}>
