@@ -54,6 +54,24 @@ export default function Home() {
     sendSocket(["P", "P"]);
     sentidoAtual = "P";
   }
+
+  function SpeechToText() {
+    // speechApi.start();
+    console.log("chegou");
+    const SpeechToText =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    let speechApi = new SpeechToText();
+    speechApi.continuous = true;
+    speechApi.lang = "pt-BR";
+
+    speechApi.start();
+    speechApi.onresult = (e) => {
+      const resultIndex = e.resultIndex;
+      console.log(e.results[resultIndex][0].transcript);
+    };
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -73,7 +91,7 @@ export default function Home() {
         stop={handleStop}
       ></Joystick>
       <div className={styles.voiceButton}>
-        <button onClick={() => console.log("voice")}>Voice</button>
+        <button onClick={() => SpeechToText()}>Voice</button>
       </div>
 
       <div className={styles.carControl}>
