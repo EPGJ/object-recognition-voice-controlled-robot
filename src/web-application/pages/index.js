@@ -57,7 +57,6 @@ export default function Home() {
 
   function SpeechToText() {
     // speechApi.start();
-    console.log("chegou");
     const SpeechToText =
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -68,8 +67,38 @@ export default function Home() {
     speechApi.start();
     speechApi.onresult = (e) => {
       const resultIndex = e.resultIndex;
-      console.log(e.results[resultIndex][0].transcript);
+      const msg = treatVoiceMessage(e.results[resultIndex][0].transcript);
+      setTargetObject(msg);
     };
+  }
+
+  function treatVoiceMessage(msg) {
+
+    if (msg.includes("direita") || msg.includes("right")) {
+      return "right";      
+    }
+
+    else if (msg.includes("esquerda") || msg.includes("left")) {
+      return "left";
+    }
+
+    else if (msg.includes("pessoa") || msg.includes("person")) {
+      return "person";
+    }
+
+    else if (msg.includes("xícara") || msg.includes("copo") || msg.includes("cup") || msg.includes("glass")) {
+      return "cup";
+    }
+
+    return "error";
+  }
+
+  function setTargetObject(msg) {
+    const iframe = document.getElementById("espapp");
+    
+    if (iframe) {
+      iframe.contentWindow.postMessage(msg, '*');
+    }
   }
 
   return (
@@ -80,7 +109,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.camControl}>
-        <iframe src="http://192.168.100.138/" frameborder="0"></iframe>
+        <iframe src="http://192.168.0.104/" id="espapp"></iframe>
       </div>
       <Joystick
         size={100}
