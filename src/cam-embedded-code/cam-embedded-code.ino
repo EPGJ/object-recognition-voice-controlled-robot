@@ -1,5 +1,5 @@
-const char *ssid = "YourWiFiSSID";
-const char *password = "YourWiFiPassword";
+const char *ssid = "<WiFiSSID>";
+const char *password = "<WiFiPassword>";
 
 const char* apssid = "esp32-cam";
 const char* appassword = "12345678";         
@@ -766,8 +766,8 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
     <figure>
       <div id="stream-container" class="image-container hidden">
         <div class="close" id="close-stream">×</div>
-        <img id="stream" src="" crossorigin="anonymous">
-        <canvas id="canvas" width="320" height="240" style="display:none">
+        <img id="stream" src="" crossorigin="anonymous" style="display:none">
+        <canvas id="canvas" width="320" height="240">
       </div>
     </figure> 
         <section class="main">
@@ -787,14 +787,7 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
             <div id="content">
                 <div id="sidebar">
                     <input type="checkbox" id="nav-toggle-cb">
-                    <nav id="menu">
-                        <div class="input-group" id="detectState-group">
-                            <label for="detectState">Start Detect</label>
-                            <div class="switch">
-                                <input id="detectState" type="checkbox">
-                                <label class="slider" for="detectState"></label>
-                            </div>
-                        </div>                     
+                    <nav id="menu">                 
                         <div class="input-group" id="object-group">
                             <label for="object">Track Object</label>
                             <select id="object">
@@ -957,8 +950,17 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
       </body>
   </html>
   
-        <script> 
-          //  網址/?192.168.1.38  可自動帶入?後參數IP值
+        <script>
+
+          window.addEventListener("message", function(event) {
+              const msg = event.data;
+              const objElem = document.getElementById("object");
+              console.log(msg);
+              if (msg !== "error") {
+                objElem.value = msg;
+              }
+          });
+
           var href=location.href;
           if (href.indexOf("?")!=-1) {
             document.getElementById("ip").value = location.search.split("?")[1].replace(/http:\/\//g,"");
@@ -1073,7 +1075,6 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
               streamButton.innerHTML = 'Stop Stream'
             }
 
-            //新增重啟電源按鈕點選事件 (自訂指令格式：http://192.168.xxx.xxx/control?cmd=P1;P2;P3;P4;P5;P6;P7;P8;P9)
             restartButton.onclick = () => {
               fetch(baseHost+"/control?restart");
             }            
@@ -1116,12 +1117,10 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
           }
 
 
-          //法蘭斯影像辨識
           const aiView = document.getElementById('stream');
           const aiStill = document.getElementById('get-still')
           const canvas = document.getElementById('canvas');     
           var context = canvas.getContext("2d");
-          const detectState = document.getElementById('detectState');
           const object = document.getElementById('object');
           const message = document.getElementById('message');
           const result = document.getElementById('result');
@@ -1136,26 +1135,7 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
                 })
           }
 
-          detectState.onclick = () => {
-            if (detectState.checked == true) {
-              aiView.style.display = "none";
-              canvas.style.display = "block";
-              aiStill.click();
-            } else {
-              aiView.style.display = "block";
-              canvas.style.display = "none";
-            }
-          }
-            
-          function stopDetection() {
-            detectState.checked = false;
-            aiView.style.display = "block";
-            canvas.style.display = "none";           
-            message.innerHTML = "";
-          }
-
-          aiView.onload = function (event) {
-            if (detectState.checked == false) return;   
+          aiView.onload = function (event) { 
             canvas.setAttribute("width", aiView.width);
             canvas.setAttribute("height", aiView.height);
             context.drawImage(aiView, 0, 0, aiView.width, aiView.height);
