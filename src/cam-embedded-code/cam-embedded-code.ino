@@ -1,5 +1,5 @@
-const char *ssid = "<WiFiSSID>";
-const char *password = "<WiFiPassword>";
+const char* ssid = "<WiFiSSID>";
+const char* password = "<WiFiPassword>";
 
 const char* apssid = "esp32-cam";
 const char* appassword = "12345678";         
