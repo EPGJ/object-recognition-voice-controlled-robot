@@ -6,6 +6,7 @@ const btnLimpar = document.querySelector("#btnLimpar");
 
 class speechApi {
   constructor() {
+    this.running = false;
     const SpeechToText =
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -24,10 +25,20 @@ class speechApi {
 
   start() {
     this.speechApi.start();
+    this.running = true;
   }
 
   stop() {
     this.speechApi.stop();
+    this.running = false;
+  }
+
+  toggle() {
+    if (this.running) {
+      this.stop();
+    } else {
+      this.start();
+    }
   }
 }
 

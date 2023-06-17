@@ -44,9 +44,12 @@
   background-color: rgb(252, 252, 252);
   margin-left: 120px;
 }
+
 .voiceButton > button:first-child {
-  background: rgb(195, 240, 158);
-  padding-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  background-color: #011674;
+  color: #fff8f8;
 }
 
 .stop {

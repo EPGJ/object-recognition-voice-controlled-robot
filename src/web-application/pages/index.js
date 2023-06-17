@@ -147,8 +147,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.camControl}>
-        <iframe src="http://localhost:8080" id="espapp"></iframe>
-        {/* <iframe src="http://10.0.0.107/" id="espapp"></iframe> */}
+        {/* <iframe src="http://localhost:8080" id="espapp"></iframe> */}
+        <iframe src="http://10.0.0.107/" id="espapp"></iframe>
       </div>
       <Joystick
         size={100}

@@ -1,10 +1,10 @@
 #include "motor.h"
 
 //Definicoes pinos ESP ligados a entrada da Ponte H
-int IN1 = D1;
-int IN2 = D2;
-int IN3 = D3;
-int IN4 = D4;
+int IN1 = 12;
+int IN2 = 13;
+int IN3 = 14;
+int IN4 = 15;
 
 void init_motor(){
   //Define os pinos como saida

@@ -1,8 +1,8 @@
 
 #include "wifi.h"
 
-const char *ssid = "LPRM6";
-const char *password = "51752927";
+const char* ssid = "PIC2-2.4G";
+const char* password = "engcomp@ufes";
 unsigned long previousMillis = 0;
 
 void init_wifi()

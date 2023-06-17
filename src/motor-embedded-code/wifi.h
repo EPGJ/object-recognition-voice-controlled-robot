@@ -2,7 +2,7 @@
 #define __WIFI_H__
 
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 
 void init_wifi();
 
