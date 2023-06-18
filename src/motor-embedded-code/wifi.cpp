@@ -1,8 +1,10 @@
+#define MY_SSID "YourWiFiSSID"
+#define MY_PASSWORD "YourWiFiPassword"
 
 #include "wifi.h"
 
-const char* ssid = "PIC2-2.4G";
-const char* password = "engcomp@ufes";
+const char* ssid = MY_SSID;
+const char* password = MY_PASSWORD;
 unsigned long previousMillis = 0;
 
 void init_wifi()

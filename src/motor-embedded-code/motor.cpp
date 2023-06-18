@@ -71,7 +71,8 @@ void movimenta_motor_direito(char* sentido){
     
 }
 
-void para_motores(){
+void para_motores() {
+    Serial.println("STOP EVERY GEAR");
     para_motor_direito();
     para_motor_esquerdo(); 
 }

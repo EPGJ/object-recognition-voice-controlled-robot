@@ -1,17 +1,11 @@
-#ifndef __SOCKETIO_H__
-#define __SOCKETIO_H__
+#ifndef __SOCKET_H__
+#define __SOCKET_H__
 
-#include <Arduino.h>
-#include <WebSocketsClient.h>
-#include <SocketIOclient.h>
-#include <ArduinoJson.h>
+#include "Arduino.h"
+#include "wifi.h"
+#include "motor.h"
 
-
-void init_socket();
-void connection_socket();
-void send_socket(String info);
-void event(const char * payload, size_t length);
-void socketIOEvent(socketIOmessageype_t type, uint8_t * payload, size_t length);
-
+String socket_receive_message();
+void   socket_treat_message(String data);
 
 #endif
