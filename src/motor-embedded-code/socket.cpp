@@ -4,15 +4,19 @@
 #include <WiFi.h>
 #include "socket.h"
  
-String socket_receive_message() {
+
+WiFiClient socket_init() {
     WiFiClient client;
  
     while (!client.connect(MY_SCKT_HOST, MY_SCKT_PORT)) {
         delay(250);
     }
- 
+
+    return client;
+}
+
+String socket_receive_message(WiFiClient client) {
     String data = client.readStringUntil('\r');
-    client.stop();
     return data;
 }
 

@@ -2,7 +2,6 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import socket from "../services/socketio";
 import { useEffect, useState } from "react";
-import { Joystick } from "react-joystick-component";
 export default function Home() {
   const [voiceListening, setVoiceListening] = useState(false);
   const [recButtonColor, setRecButtonColor] = useState("#f5f5f5");
@@ -32,29 +31,6 @@ export default function Home() {
       clearInterval(intervalRef);
       sendSocket(["P", "P"]);
     }
-  }
-  let sentidoAtual = "";
-  function handleMove(e) {
-    // if (!e) return;
-    if (sentidoAtual == e.direction) return;
-    if (e.direction == "RIGHT") {
-      sendSocket(["F", "P"]);
-    }
-    if (e.direction == "LEFT") {
-      sendSocket(["P", "F"]);
-    }
-    if (e.direction == "FORWARD") {
-      sendSocket(["F", "F"]);
-    }
-    if (e.direction == "BACKWARD") {
-      sendSocket(["T", "T"]);
-    }
-    sentidoAtual = e.direction;
-  }
-
-  function handleStop(e) {
-    sendSocket(["P", "P"]);
-    sentidoAtual = "P";
   }
 
   class SpeechApi {

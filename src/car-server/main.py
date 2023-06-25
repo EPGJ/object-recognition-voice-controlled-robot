@@ -1,4 +1,5 @@
 import socket
+import time
 
 from flask import Flask
 from flask_socketio import SocketIO
@@ -17,16 +18,19 @@ socketio = SocketIO(
     engineio_logger=False
 )
 
+def convert_data_to_message(data):
+    data_split = str(data).split("][")
+    data_bytes = [b"[" + d.replace("[","").replace("]","").encode() + b"]\r" for d in data_split]
+    return data_bytes
+
 @socketio.on("comando")
 def on_command(data):
-    client, _ = s.accept()
- 
-    client.send(str(data).encode())
- 
-    print("Closing connection")
-    client.close()
+    for data_bytes in convert_data_to_message(data):
+        client.sendall(data_bytes)
+    time.sleep(0)
 
 if __name__ == "__main__":
     s.bind((ESP_ADDRESS, ESP_PORT))
     s.listen(0)
+    client, _ = s.accept()
     socketio.run(app)

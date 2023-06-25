@@ -5,7 +5,8 @@
 #include "wifi.h"
 #include "motor.h"
 
-String socket_receive_message();
-void   socket_treat_message(String data);
+WiFiClient socket_init();
+String     socket_receive_message(WiFiClient client);
+void       socket_treat_message(String data);
 
 #endif
