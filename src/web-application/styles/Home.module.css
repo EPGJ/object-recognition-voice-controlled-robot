@@ -52,6 +52,11 @@
   color: #fff8f8;
 }
 
+.voiceButton {
+  position: absolute;
+  left: 4rem;
+  top: 65vh;
+}
 .stop {
   position: absolute;
   right: 4rem;

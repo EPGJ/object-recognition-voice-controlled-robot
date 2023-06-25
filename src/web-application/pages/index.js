@@ -6,16 +6,13 @@ import { Joystick } from "react-joystick-component";
 export default function Home() {
   const [voiceListening, setVoiceListening] = useState(false);
   const [recButtonColor, setRecButtonColor] = useState("#f5f5f5");
-  const [recTextColor, setRecTextColor] = useState("#f50000")
+  const [recTextColor, setRecTextColor] = useState("#f50000");
   useEffect(() => {
     socket.on("carrinho", (data) => {
       console.log(data);
     });
   }, []);
-  useEffect(() => {
-  }, voiceListening);
-
-
+  useEffect(() => {}, voiceListening);
 
   function sendSocket(comando) {
     console.log(comando);
@@ -26,7 +23,6 @@ export default function Home() {
 
   function onMouseDown(p1, p2) {
     intervalRef = setInterval(() => {
-      // console.log(e.type);
       sendSocket([p1, p2]);
     }, 50);
   }
@@ -38,30 +34,6 @@ export default function Home() {
     }
   }
 
-  let sentidoAtual = "";
-  function handleMove(e) {
-    // if (!e) return;
-    if (sentidoAtual == e.direction) return;
-    if (e.direction == "RIGHT") {
-      sendSocket(["F", "P"]);
-    }
-    if (e.direction == "LEFT") {
-      sendSocket(["P", "F"]);
-    }
-    if (e.direction == "FORWARD") {
-      sendSocket(["F", "F"]);
-    }
-    if (e.direction == "BACKWARD") {
-      sendSocket(["T", "T"]);
-    }
-    sentidoAtual = e.direction;
-  }
-
-  function handleStop(e) {
-    sendSocket(["P", "P"]);
-    sentidoAtual = "P";
-  }
-
   class SpeechApi {
     constructor() {
       this.running = false;
@@ -71,7 +43,8 @@ export default function Home() {
         return;
       }
 
-      const SpeechToText = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const SpeechToText =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
       this.speechApi = new SpeechToText();
       this.speechApi.continuous = true;
       this.speechApi.lang = "pt-BR";
@@ -89,7 +62,7 @@ export default function Home() {
       setRecButtonColor("#f50000");
       setRecTextColor("#f5f5f5");
     }
-    
+
     stop() {
       this.speechApi.stop();
       this.running = false;
@@ -97,7 +70,7 @@ export default function Home() {
       setRecButtonColor("#f5f5f5");
       setRecTextColor("#f50000");
     }
-    
+
     toggle() {
       if (this.running) {
         this.stop();
@@ -108,23 +81,19 @@ export default function Home() {
   }
   const speechApi = new SpeechApi();
 
-
-  
   function treatVoiceMessage(msg) {
-    
     if (msg.includes("direita") || msg.includes("right")) {
-      return "right";      
-    }
-
-    else if (msg.includes("esquerda") || msg.includes("left")) {
+      return "right";
+    } else if (msg.includes("esquerda") || msg.includes("left")) {
       return "left";
-    }
-
-    else if (msg.includes("pessoa") || msg.includes("person")) {
+    } else if (msg.includes("pessoa") || msg.includes("person")) {
       return "person";
-    }
-
-    else if (msg.includes("xícara") || msg.includes("copo") || msg.includes("cup") || msg.includes("glass")) {
+    } else if (
+      msg.includes("xícara") ||
+      msg.includes("copo") ||
+      msg.includes("cup") ||
+      msg.includes("glass")
+    ) {
       return "cup";
     }
 
@@ -133,9 +102,9 @@ export default function Home() {
 
   function setTargetObject(msg) {
     const iframe = document.getElementById("espapp");
-    
+
     if (iframe) {
-      iframe.contentWindow.postMessage(msg, '*');
+      iframe.contentWindow.postMessage(msg, "*");
     }
   }
 
@@ -150,16 +119,16 @@ export default function Home() {
         <iframe src="http://localhost:8080" id="espapp"></iframe>
         {/* <iframe src="http://10.0.0.107/" id="espapp"></iframe> */}
       </div>
-      <Joystick
-        size={100}
-        sticky={true}
-        baseColor="rgb(245, 245, 245)"
-        stickColor="rgb(128, 128, 128)"
-        move={handleMove}
-        stop={handleStop}
-      ></Joystick>
       <div className={styles.voiceButton}>
-        <button style={{background:recButtonColor, color:recTextColor}} onClick={() => speechApi.toggle()}><b>Falar</b></button>
+        <button
+          style={{
+            background: recButtonColor,
+            color: recTextColor,
+          }}
+          onClick={() => speechApi.toggle()}
+        >
+          <b>Falar</b>
+        </button>
       </div>
 
       <div className={styles.carControl}>
