@@ -1,5 +1,5 @@
-#define MY_SSID "YourWiFiSSID"
-#define MY_PASSWORD "YourWiFiPassword"
+#define MY_SSID "PIC2-2.4G"
+#define MY_PASSWORD "engcomp@ufes"
 
 #include "wifi.h"
 
