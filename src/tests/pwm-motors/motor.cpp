@@ -34,53 +34,76 @@ void motor_init() {
 }
 
 void moveForward (uint8_t duty_cycle) {
+
+
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
+    ledcWrite(pwm_right_channel, duty_cycle);
+    delay(100);
+
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, HIGH);
-
     ledcWrite(pwm_left_channel, duty_cycle);
-    ledcWrite(pwm_right_channel, duty_cycle);
+    delay(100);
+
 }
 
 
 void moveBackward(uint8_t duty_cycle) {
+
     digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
+    ledcWrite(pwm_right_channel, duty_cycle);
+    delay(100);
+
     digitalWrite(IN3, HIGH);
     digitalWrite(IN4, LOW);
-    
-    ledcWrite(pwm_right_channel, duty_cycle);
     ledcWrite(pwm_left_channel, duty_cycle);   
+    delay(100);
+    
 }
 
 void turnRight(uint8_t duty_cycle) {
+
+
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, LOW);
+    ledcWrite(pwm_right_channel, 0);
+    delay(100);
+
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, HIGH);
-    
-    ledcWrite(pwm_right_channel, duty_cycle);
     ledcWrite(pwm_left_channel, duty_cycle);   
+    delay(100);
+    
 }
 void turnLeft(uint8_t duty_cycle) {
+
+
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
+    ledcWrite(pwm_right_channel, duty_cycle);
+    delay(100);
+
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, LOW);
+    ledcWrite(pwm_left_channel, 0);   
+    delay(100);
     
-    ledcWrite(pwm_right_channel, duty_cycle);
-    ledcWrite(pwm_left_channel, duty_cycle);   
 }
 
 void moveStop() {
-     digitalWrite(IN1, LOW);
-     digitalWrite(IN2, LOW);
-     digitalWrite(IN3, LOW);
-     digitalWrite(IN4, LOW);
+
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, LOW);
+    ledcWrite(pwm_right_channel, 0);
+    delay(100);
+
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, LOW);
+    ledcWrite(pwm_left_channel, 0); 
+    delay(100);
     
-     ledcWrite(pwm_right_channel, 0);
-     ledcWrite(pwm_left_channel, 0); 
 }
 
 void control_direction(uint8_t left_rot_sense, uint8_t right_rot_sense, uint8_t duty_cycle) {

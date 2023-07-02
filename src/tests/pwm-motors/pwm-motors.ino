@@ -8,34 +8,30 @@ void setup() {
 
 void loop() {
     //working  // ******************************
-    // control_direction('F','F', speed); // --> works perfectly
+    // control_direction('F','F', speed); // --> moveForward -- works perfectly
     // delay(2000);
     // moveStop();
     // delay(1000);
 
-    // control_direction('F','P', speed);  // --> works perfectly
-    // delay(2000);
-    // moveStop();
-    // delay(1000);
+    control_direction('P','F', speed); // --> turn right -- works perfectly
+    delay(2000);
+    moveStop();
+    delay(1000);
+
+    control_direction('F','P', speed);  // --> turn left -- works perfectly
+    delay(2000);
+    moveStop();
+    delay(1000);
 
 
     // not working  // *******************************
-    // control_direction('P','F', speed); // --> two weels move forward, just the right one should move
-    // delay(2000);
-    // moveStop();
-    // delay(1000);
+
 
     // control_direction('T','T', speed); // --> Just the right wheel move backward, the other one keep stoped.
     // delay(2000);
     // moveStop();
     // delay(1000);
 
-
-    // testing  // *******************************
- 
-
-
-    // not tested  // *******************************
 
 
 }
