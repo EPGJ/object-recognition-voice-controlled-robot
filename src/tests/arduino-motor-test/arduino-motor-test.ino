@@ -1,4 +1,3 @@
-#include "motor.h"
 const int IN1 = 9;  
 const int IN2 = 6;   
 const int IN3 = 5;  
@@ -8,7 +7,12 @@ const int RightPwmMotor = 10;
 
 void setup() {
     Serial.begin(115200);
-    motor_init();
+    pinMode(IN2, OUTPUT);
+    pinMode(IN3, OUTPUT);
+    pinMode(IN1, OUTPUT);
+    pinMode(IN2, OUTPUT);
+    pinMode(LeftPwmMotor, OUTPUT);
+    pinMode(RightPwmMotor, OUTPUT);
 }
 
 void moveForward () {

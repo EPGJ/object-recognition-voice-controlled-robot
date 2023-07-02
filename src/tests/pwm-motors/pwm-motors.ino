@@ -1,50 +1,41 @@
 #include "motor.h"
+const int speed = 255;
 
 void setup() {
     Serial.begin(115200);
     motor_init();
 }
 
-void moveForward () {
-    move_left_gear('F', 255);
-    move_right_gear('F', 255);
-}
-
-
-void moveBackward() {
-    move_left_gear('T', 255);
-    move_right_gear('T', 255);
-}
-
-void turnRight() {
-    move_left_gear('P', 255);
-    move_right_gear('F', 255);
-}
-void turnLeft() {
-    move_left_gear('F', 255);
-    move_right_gear('P',255);
-}
-
-void moveStop() {
-    move_left_gear('P', 255);
-    move_right_gear('P',255);
-}
-
 void loop() {
-    moveForward();
-    delay(1000);
-    moveStop();
-    delay(1000);
-    moveBackward();
-    delay(1000);
-    moveStop();
-    delay(1000);
-    turnLeft();
-    delay(1000);
-    moveStop();
-    delay(1000);
-    turnRight();
-    delay(1000);
-    moveStop();
-    delay(1000);
+    //working  // ******************************
+    // control_direction('F','F', speed); // --> works perfectly
+    // delay(2000);
+    // moveStop();
+    // delay(1000);
+
+    // control_direction('F','P', speed);  // --> works perfectly
+    // delay(2000);
+    // moveStop();
+    // delay(1000);
+
+
+    // not working  // *******************************
+    // control_direction('P','F', speed); // --> two weels move forward, just the right one should move
+    // delay(2000);
+    // moveStop();
+    // delay(1000);
+
+    // control_direction('T','T', speed); // --> Just the right wheel move backward, the other one keep stoped.
+    // delay(2000);
+    // moveStop();
+    // delay(1000);
+
+
+    // testing  // *******************************
+ 
+
+
+    // not tested  // *******************************
+
+
 }
