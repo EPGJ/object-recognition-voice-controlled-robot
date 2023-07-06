@@ -7,12 +7,12 @@ const int IN3 = 15;
 const int IN4 = 14; 
 
 const int pwm_left_pin = 4;
-const int pwm_left_freq = 5000;
+const int pwm_left_freq = 6000;
 const int pwm_left_channel = 0;
 
 const int pwm_right_pin = 2;
 const int pwm_right_freq = 3000;
-const int pwm_right_channel = 1;
+const int pwm_right_channel = 2;
 
 const int pwm_resolution = 8;
 
@@ -39,12 +39,12 @@ void moveForward (uint8_t duty_cycle) {
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
     ledcWrite(pwm_right_channel, duty_cycle);
-    delay(100);
+    delay(10);
 
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, HIGH);
     ledcWrite(pwm_left_channel, duty_cycle);
-    delay(100);
+    delay(10);
 
 }
 

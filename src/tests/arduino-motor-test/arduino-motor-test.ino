@@ -37,7 +37,7 @@ void moveBackward() {
 }
 
 void turnRight() {
-    digitalWrite(IN1, LOW);
+    digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, HIGH);
@@ -48,7 +48,7 @@ void turnRight() {
 void turnLeft() {
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
-    digitalWrite(IN3, LOW);
+    digitalWrite(IN3, HIGH);
     digitalWrite(IN4, LOW);
     
     analogWrite(RightPwmMotor, 255);
@@ -73,14 +73,17 @@ void loop() {
     delay(2000);
     moveStop();
     delay(1000);
+
     turnLeft();
     delay(2000);
     moveStop();
     delay(1000);
+
     moveBackward();
     delay(2000);
     moveStop();
     delay(1000);
+    
     turnRight();
     delay(2000);
     moveStop();
