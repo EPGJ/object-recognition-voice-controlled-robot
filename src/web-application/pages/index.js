@@ -18,6 +18,11 @@ export default function Home() {
     socket.emit("comando", comando);
   }
 
+  function sendInstanceClass(instanceClass) {
+    console.log(instanceClass);
+    socket.emit("setClass", instanceClass);
+  }
+
   let intervalRef = null;
 
   function onMouseDown(p1, p2) {
@@ -51,6 +56,7 @@ export default function Home() {
         const resultIndex = e.resultIndex;
         const msg = treatVoiceMessage(e.results[resultIndex][0].transcript);
         setTargetObject(msg);
+        sendInstanceClass(msg);
       };
     }
 
@@ -115,8 +121,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.camControl}>
-        <iframe src="http://localhost:8080" id="espapp"></iframe>
-        {/* <iframe src="http://10.0.0.107/" id="espapp"></iframe> */}
+        {/* <iframe src="http://localhost:8080" id="espapp"></iframe> */}
+        <iframe src="http://192.168.0.104:80/" id="espapp"></iframe>
       </div>
       <div className={styles.voiceButton}>
         <button

@@ -1,15 +1,24 @@
 import socket
+import threading
 import time
 
 from flask import Flask
 from flask_socketio import SocketIO
+from selenium import webdriver
 
 NODE_ADDRESS = "localhost"
 NODE_PORT = 3000
 ESP_ADDRESS = "0.0.0.0"
 ESP_PORT = 8090
 
+# Setting up selenium
+options = webdriver.EdgeOptions()
+driver = webdriver.Edge(options=options)
+driver.minimize_window()
+driver.get("http://192.168.0.104:80/")
+
 s = socket.socket()
+instance_class = ""
 
 app = Flask(__name__)
 socketio = SocketIO(
@@ -25,12 +34,47 @@ def convert_data_to_message(data):
 
 @socketio.on("comando")
 def on_command(data):
+    print(data)
     for data_bytes in convert_data_to_message(data):
         client.sendall(data_bytes)
     time.sleep(0)
+
+@socketio.on("setClass")
+def set_class(data):
+    global instance_class
+    instance_class = data
+
+def detections_loop():
+    clicked = False
+    while True:
+        form = driver.find_element("id", "result")
+        if form.text == "" and not clicked:
+            print("Selenium: I am waiting")
+            stream_button = driver.find_element("id", "toggle-stream")
+            stream_button.click()
+            clicked = True
+
+        text = form.text
+        if text == "":
+            continue
+
+        detections = text.split("] ")
+        for detection in detections:
+            splitted_text = detection.split(", ")
+            if len(splitted_text) < 6:
+                continue
+            category = splitted_text[0].split("0")[-1]
+            coords = (int(splitted_text[2]), int(splitted_text[3]), int(splitted_text[4]), int(splitted_text[5].split("[")[0]))
+            if category == instance_class:
+                print("Found object!")
+                mid_x = (coords[2] - coords[0]) // 2
+                mid_y = (coords[3] - coords[1]) // 2
+                print(f"dists: {128 - mid_x},{128 - mid_y}")
+            time.sleep(2)
 
 if __name__ == "__main__":
     s.bind((ESP_ADDRESS, ESP_PORT))
     s.listen(0)
     client, _ = s.accept()
+    threading.Thread(target=detections_loop).start()
     socketio.run(app)
