@@ -13,6 +13,7 @@ ESP_PORT = 8090
 
 # Setting up selenium
 options = webdriver.EdgeOptions()
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Edge(options=options)
 driver.minimize_window()
 driver.get("http://192.168.0.104:80/")
@@ -28,15 +29,15 @@ socketio = SocketIO(
 )
 
 def convert_data_to_message(data):
-    data_split = str(data).split("][")
-    data_bytes = [b"[" + d.replace("[","").replace("]","").encode() + b"]\r" for d in data_split]
+    data_split = str(data)
+    data_bytes = [d.encode() + b"\r" for d in data_split]
     return data_bytes
 
 @socketio.on("comando")
 def on_command(data):
-    print(data)
     for data_bytes in convert_data_to_message(data):
-        client.sendall(data_bytes)
+        #client.sendall(data_bytes)
+        print(data_bytes.decode())
     time.sleep(0)
 
 @socketio.on("setClass")
@@ -73,8 +74,8 @@ def detections_loop():
             time.sleep(2)
 
 if __name__ == "__main__":
-    s.bind((ESP_ADDRESS, ESP_PORT))
-    s.listen(0)
-    client, _ = s.accept()
+    #s.bind((ESP_ADDRESS, ESP_PORT))
+    #s.listen(0)
+    #client, _ = s.accept()
     threading.Thread(target=detections_loop).start()
     socketio.run(app)

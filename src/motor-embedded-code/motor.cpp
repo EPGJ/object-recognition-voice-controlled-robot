@@ -1,103 +1,115 @@
 #include "motor.h"
+#include <Arduino.h>
 
-//Definicoes pinos ESP ligados a entrada da Ponte H
-int IN1 = 12;
-int IN2 = 13;
-int IN3 = 14;
-int IN4 = 15;
+#define LIGHT_PIN 4
 
-void init_motor(){
-  //Define os pinos como saida
- pinMode(IN1, OUTPUT);
- pinMode(IN2, OUTPUT);
- pinMode(IN3, OUTPUT);
- pinMode(IN4, OUTPUT);
+#define UP 1
+#define DOWN 2
+#define LEFT 3
+#define RIGHT 4
+#define STOP 0
+
+#define RIGHT_MOTOR 0
+#define LEFT_MOTOR 1
+
+#define FORWARD 1
+#define BACKWARD -1
+
+const int PWMFreq = 1000; /* 1 KHz */
+const int PWMResolution = 8;
+const int PWMSpeedChannel = 2;
+const int PWMLightChannel = 3;
+
+struct MOTOR_PINS
+{
+  int pinEn;  
+  int pinIN1;
+  int pinIN2;    
+};
+
+std::vector<MOTOR_PINS> motorPins = 
+{
+  {2, 12, 13}, //RIGHT_MOTOR Pins (EnA, IN1, IN2)
+  {2, 1, 3},  //LEFT_MOTOR  Pins (EnB, IN3, IN4)
+};
+
+void init_motor() 
+{
+  //Set up PWM
+  ledcSetup(PWMSpeedChannel, PWMFreq, PWMResolution);
+  ledcSetup(PWMLightChannel, PWMFreq, PWMResolution);
+      
+  for (int i = 0; i < motorPins.size(); i++)
+  {
+    pinMode(motorPins[i].pinEn, OUTPUT);    
+    pinMode(motorPins[i].pinIN1, OUTPUT);
+    pinMode(motorPins[i].pinIN2, OUTPUT);  
+    /* Attach the PWM Channel to the motor enb Pin */
+    ledcAttachPin(motorPins[i].pinEn, PWMSpeedChannel);
+  }
+  moveCar(STOP);
+
+  pinMode(LIGHT_PIN, OUTPUT);    
+  ledcAttachPin(LIGHT_PIN, PWMLightChannel);
+  ledcWrite(PWMSpeedChannel, 255);
+
 }
 
-void movimenta_motor_frente(){
-    digitalWrite(IN3, HIGH);
-    digitalWrite(IN4, LOW);
-    delay(10);
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
-    
-    
+
+void rotateMotor(int motorNumber, int motorDirection)
+{
+  if (motorDirection == FORWARD)
+  {
+    digitalWrite(motorPins[motorNumber].pinIN1, LOW);
+    digitalWrite(motorPins[motorNumber].pinIN2, HIGH);    
+  }
+  else if (motorDirection == BACKWARD)
+  {
+    digitalWrite(motorPins[motorNumber].pinIN1, HIGH);
+    digitalWrite(motorPins[motorNumber].pinIN2, LOW);     
+  }
+  else
+  {
+    digitalWrite(motorPins[motorNumber].pinIN1, LOW);
+    digitalWrite(motorPins[motorNumber].pinIN2, LOW);       
+  }
+}
+
+
+void moveCar(int inputValue)
+{
+  Serial.printf("Got value as %d\n", inputValue);  
+  switch(inputValue)
+  {
+
+    case UP:
+      rotateMotor(RIGHT_MOTOR, FORWARD);
+      rotateMotor(LEFT_MOTOR, FORWARD);                  
+      break;
   
-  }
-
-void movimenta_motor_tras(){
-  digitalWrite(IN3, LOW);
-    digitalWrite(IN4, HIGH);
-    delay(10);
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
-    
-    
+    case DOWN:
+      rotateMotor(RIGHT_MOTOR, BACKWARD);
+      rotateMotor(LEFT_MOTOR, BACKWARD);  
+      break;
   
-  }
-
+    case LEFT:
+      rotateMotor(RIGHT_MOTOR, FORWARD);
+      rotateMotor(LEFT_MOTOR, BACKWARD);  
+      break;
   
-void movimenta_direito(){
-  para_motor_direito();
-    digitalWrite(IN3,LOW);
-    digitalWrite(IN4, HIGH);
-
-    
-  }
-
-void movimenta_esquerdo(){
-
-  para_motor_esquerdo();
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
-    
-    
+    case RIGHT:
+      rotateMotor(RIGHT_MOTOR, BACKWARD);
+      rotateMotor(LEFT_MOTOR, FORWARD); 
+      break;
+ 
+    case STOP:
+      rotateMotor(RIGHT_MOTOR, STOP);
+      rotateMotor(LEFT_MOTOR, STOP);    
+      break;
   
+    default:
+      rotateMotor(RIGHT_MOTOR, STOP);
+      rotateMotor(LEFT_MOTOR, STOP);    
+      break;
   }
-
-void movimenta_motor_direito(char* sentido){
-  //Gira o motor no sentido horario
-  if(sentido == (char*)'F'){
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
-    Serial.println("direito horario");  
-  }
-  else {
-    //Gira o motor no sentido anti-horario
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
-    Serial.println("direito anti horario");
-  }
-    
-}
-
-void para_motores() {
-    Serial.println("STOP EVERY GEAR");
-    para_motor_direito();
-    para_motor_esquerdo(); 
-}
-
-void movimenta_motor_esquerdo(char* sentido){
-  //Gira o motor no sentido horario
-  if(sentido == (char*)'F'){
-    digitalWrite(IN3, HIGH);
-    digitalWrite(IN4, LOW);
-    Serial.println("esquerdo horario");
-  }
-  else {
-    //Gira o motor no sentido anti-horario
-    digitalWrite(IN3, LOW);
-    digitalWrite(IN4, HIGH);
-    Serial.println("esquerdo anti-horario");
-  }
-}
-
-void para_motor_direito(){
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, HIGH);
-}
-
-void para_motor_esquerdo(){
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, HIGH);
 }

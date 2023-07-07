@@ -29,21 +29,5 @@ void socket_treat_message(String data) {
         return;
 
     // If there's any content on the message
-    char *command_l, *command_r;
-    command_l = (char*)&(data[2]);
-    command_r = (char*)&(data[7]);
-
-    if (*command_l == *command_r) {
-        if (*command_l != 'P') { // Move forward or backward
-            movimenta_motor_esquerdo(command_l);
-            delay(10);
-            movimenta_motor_direito(command_r);
-        } else { // Stop gear
-            para_motores();
-        }
-    } else if (*command_l == 'F') { // Move left
-        movimenta_esquerdo();
-    } else { // Move right
-        movimenta_direito();
-    }
+    moveCar(data[0] - '0');
 }

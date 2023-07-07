@@ -2,6 +2,13 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import socket from "../services/socketio";
 import { useEffect, useState } from "react";
+
+const STOP = 0;
+const FORWARD = 1;
+const BACKWARD = 2;
+const LEFT = 3;
+const RIGHT = 4;
+
 export default function Home() {
   const [voiceListening, setVoiceListening] = useState(false);
   const [recButtonColor, setRecButtonColor] = useState("#f5f5f5");
@@ -25,16 +32,16 @@ export default function Home() {
 
   let intervalRef = null;
 
-  function onMouseDown(p1, p2) {
+  function onMouseDown(direction_const) {
     intervalRef = setInterval(() => {
-      sendSocket([p1, p2]);
+      sendSocket(direction_const);
     }, 50);
   }
 
   function onMouseUp(e) {
     if (intervalRef != null) {
       clearInterval(intervalRef);
-      sendSocket(["P", "P"]);
+      sendSocket(STOP);
     }
   }
 
@@ -139,7 +146,7 @@ export default function Home() {
       <div className={styles.carControl}>
         <div className={styles.upperButton}>
           <button
-            onMouseDown={() => onMouseDown("F", "F")}
+            onMouseDown={() => onMouseDown(FORWARD)}
             onMouseUp={onMouseUp}
           >
             FRENTE
@@ -148,15 +155,15 @@ export default function Home() {
 
         <div className={styles.middleButton}>
           <button
-            onMouseDown={() => onMouseDown("P", "F")}
+            onMouseDown={() => onMouseDown(LEFT)}
             onMouseUp={onMouseUp}
-            onTouchStart={() => onMouseDown("P", "F")}
+            onTouchStart={() => onMouseDown(LEFT)}
             onTouchEnd={onMouseUp}
           >
             ESQUERDA
           </button>
           <button
-            onMouseDown={() => onMouseDown("F", "P")}
+            onMouseDown={() => onMouseDown(RIGHT)}
             onMouseUp={onMouseUp}
           >
             DIREITA
@@ -165,7 +172,7 @@ export default function Home() {
 
         <div className={styles.lowerButton}>
           <button
-            onMouseDown={() => onMouseDown("T", "T")}
+            onMouseDown={() => onMouseDown(BACKWARD)}
             onMouseUp={onMouseUp}
           >
             TRÁS
@@ -173,7 +180,7 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.stop}>
-        <button onClick={() => sendSocket(["P", "P"])}>Para</button>
+        <button onClick={() => sendSocket(STOP)}>Para</button>
       </div>
     </div>
   );
