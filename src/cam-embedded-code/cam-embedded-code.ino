@@ -1,5 +1,5 @@
-const char* ssid = "<WiFiSSID>";
-const char* password = "<WiFiPassword>";
+const char* ssid = "PIC2-2.4G";
+const char* password = "engcomp@ufes";
 
 const char* apssid = "esp32-cam";
 const char* appassword = "12345678";         
