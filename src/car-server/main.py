@@ -1,6 +1,8 @@
+import signal
 import socket
 import threading
 import time
+import os
 
 from flask import Flask
 from flask_socketio import SocketIO
@@ -12,11 +14,11 @@ ESP_ADDRESS = "0.0.0.0"
 ESP_PORT = 8090
 
 # Setting up selenium
-options = webdriver.EdgeOptions()
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
-driver = webdriver.Edge(options=options)
-driver.minimize_window()
-driver.get("http://192.168.0.104:80/")
+# options = webdriver.EdgeOptions()
+# options.add_experimental_option('excludeSwitches', ['enable-logging'])
+# driver = webdriver.Edge(options=options)
+# driver.minimize_window()
+# driver.get("http://192.168.0.104:80/")
 
 s = socket.socket()
 instance_class = ""
@@ -28,6 +30,10 @@ socketio = SocketIO(
     engineio_logger=False
 )
 
+# Execution flow control
+pid = os.getpid()
+client_connected = threading.Event()
+
 def convert_data_to_message(data):
     data_split = str(data)
     data_bytes = [d.encode() + b"\r" for d in data_split]
@@ -36,7 +42,7 @@ def convert_data_to_message(data):
 @socketio.on("comando")
 def on_command(data):
     for data_bytes in convert_data_to_message(data):
-        #client.sendall(data_bytes)
+        client.sendall(data_bytes)
         print(data_bytes.decode())
     time.sleep(0)
 
@@ -73,9 +79,24 @@ def detections_loop():
                 print(f"dists: {128 - mid_x},{128 - mid_y}")
             time.sleep(2)
 
+def socket_thread():
+    s.bind((ESP_ADDRESS, ESP_PORT))
+    s.listen(0)
+    client, _ = s.accept()
+    client_connected.set()
+
+def sigint_handler(*_):
+    print("Killing everything!")
+    os.kill(pid, 9)
+
 if __name__ == "__main__":
-    #s.bind((ESP_ADDRESS, ESP_PORT))
-    #s.listen(0)
-    #client, _ = s.accept()
-    threading.Thread(target=detections_loop).start()
+    signal.signal(signal.SIGINT, sigint_handler)
+    #threading.Thread(target=detections_loop).start()
+    s_thread = threading.Thread(target=socket_thread)
+    s_thread.start()
+
+    while not client_connected.is_set():
+        print("Waiting socket connection...")
+        time.sleep(5)
+
     socketio.run(app)
