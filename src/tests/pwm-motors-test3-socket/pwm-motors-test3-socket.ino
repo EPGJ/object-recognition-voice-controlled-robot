@@ -1,18 +1,18 @@
 #include "esp_camera.h"
 #include <Arduino.h>
 #include <WiFi.h>
-#include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h>
+//#include <AsyncTCP.h>
+//#include <ESPAsyncWebServer.h>
 #include <iostream>
 #include <sstream>
 
-// #define MY_SSID "PIC2-2.4G"
-// #define MY_PASSWORD "engcomp@ufes"
+#define MY_SSID "PIC2-2.4G"
+#define MY_PASSWORD "engcomp@ufes"
 
-#define MY_SSID "Oi Fibra"
-#define MY_PASSWORD "95640138"
+// #define MY_SSID "Oi Fibra"
+// #define MY_PASSWORD "95640138"
 
-#define MY_SCKT_HOST "192.168.100.146"
+#define MY_SCKT_HOST "10.0.0.109"
 #define MY_SCKT_PORT 8090
 
 const char* ssid = MY_SSID;
@@ -36,7 +36,7 @@ std::vector<MOTOR_PINS> motorPins =
 
 #define LIGHT_PIN 4
 
-#define UP 1
+#define UP '1'
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
@@ -104,7 +104,7 @@ void socket_treat_message(String data) {
         return;
 
     // If there's any content on the message
-    // moveCar(data[0] - '0');
+    moveCar(data[0]);
 }
 
 
@@ -128,9 +128,9 @@ void rotateMotor(int motorNumber, int motorDirection)
 }
 
 
-void moveCar(int inputValue)
+void moveCar(char inputValue)
 {
-  // Serial.printf("Got value as %d\n", inputValue);  
+  Serial.printf("Got value as %d\n", inputValue);  
   switch(inputValue)
   {
 
@@ -208,10 +208,10 @@ void init_motors() {
 
 void setup(void) 
 {
-  Serial.begin(115200);
+  //Serial.begin(115200);
   init_wifi();
   client = socket_init();
-  Serial.println("Pronto");
+  //Serial.println("Pronto");
   init_motors();
 }
 
@@ -221,24 +221,24 @@ void loop()
     String data;
     data = socket_receive_message(client);
     socket_treat_message(data);
-    Serial.println("loop");
-    moveCar(UP);
-    delay(2000);
-    moveCar(STOP);
-    delay(1000);
+    //Serial.println("loop");
+    // moveCar(UP);
+    // delay(2000);
+    // moveCar(STOP);
+    // delay(1000);
 
-    moveCar(DOWN);
-    delay(2000);
-    moveCar(STOP);
-    delay(1000);
+    // moveCar(DOWN);
+    // delay(2000);
+    // moveCar(STOP);
+    // delay(1000);
 
-    moveCar(LEFT);
-    delay(2000);
-    moveCar(STOP);
-    delay(1000);
+    // moveCar(LEFT);
+    // delay(2000);
+    // moveCar(STOP);
+    // delay(1000);
 
-    moveCar(RIGHT);
-    delay(2000);
-    moveCar(STOP);
-    delay(1000);
+    // moveCar(RIGHT);
+    // delay(2000);
+    // moveCar(STOP);
+    // delay(1000);
 }

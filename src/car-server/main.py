@@ -79,12 +79,6 @@ def detections_loop():
                 print(f"dists: {128 - mid_x},{128 - mid_y}")
             time.sleep(2)
 
-def socket_thread():
-    s.bind((ESP_ADDRESS, ESP_PORT))
-    s.listen(0)
-    client, _ = s.accept()
-    client_connected.set()
-
 def sigint_handler(*_):
     print("Killing everything!")
     os.kill(pid, 9)
@@ -92,11 +86,10 @@ def sigint_handler(*_):
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, sigint_handler)
     #threading.Thread(target=detections_loop).start()
-    s_thread = threading.Thread(target=socket_thread)
-    s_thread.start()
-
-    while not client_connected.is_set():
-        print("Waiting socket connection...")
-        time.sleep(5)
+    s.bind((ESP_ADDRESS, ESP_PORT))
+    s.listen(0)
+    #s.settimeout(10)
+    client, _ = s.accept()
+    client_connected.set()
 
     socketio.run(app)

@@ -4,10 +4,10 @@ import socket from "../services/socketio";
 import { useEffect, useState } from "react";
 
 const STOP = 0;
-const FORWARD = 1;
-const BACKWARD = 2;
-const LEFT = 3;
-const RIGHT = 4;
+const FORWARD = 3;
+const BACKWARD = 4;
+const LEFT = 1;
+const RIGHT = 2;
 
 export default function Home() {
   const [voiceListening, setVoiceListening] = useState(false);
@@ -19,7 +19,7 @@ export default function Home() {
     });
   }, []);
   useEffect(() => {}, voiceListening);
-
+ 
   function sendSocket(comando) {
     console.log(comando);
     socket.emit("comando", comando);
@@ -129,7 +129,7 @@ export default function Home() {
       </Head>
       <div className={styles.camControl}>
         {/* <iframe src="http://localhost:8080" id="espapp"></iframe> */}
-        <iframe src="http://192.168.0.104:80/" id="espapp"></iframe>
+        <iframe src="http://10.0.0.110:80/" id="espapp"></iframe>
       </div>
       <div className={styles.voiceButton}>
         <button

@@ -1,8 +1,8 @@
 #include "esp_camera.h"
 #include <Arduino.h>
 #include <WiFi.h>
-#include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h>
+// #include <AsyncTCP.h>
+// #include <ESPAsyncWebServer.h>
 #include <iostream>
 #include <sstream>
 
