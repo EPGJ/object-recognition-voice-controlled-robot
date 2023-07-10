@@ -36,7 +36,7 @@ std::vector<MOTOR_PINS> motorPins =
 
 #define LIGHT_PIN 4
 
-#define UP '1'
+#define UP 1
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
@@ -100,11 +100,13 @@ void socket_treat_message(String data) {
     uint8_t len;
     len = data.length();
     Serial.println(len);
-    if (len < 1)
+    if (len < 1){
+        moveCar(STOP);
         return;
+    }
 
     // If there's any content on the message
-    moveCar(data[0]);
+    moveCar(data[0] - '0');
 }
 
 
