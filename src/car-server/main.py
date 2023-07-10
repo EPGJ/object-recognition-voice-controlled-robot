@@ -14,11 +14,11 @@ ESP_ADDRESS = "0.0.0.0"
 ESP_PORT = 8090
 
 # Setting up selenium
-options = webdriver.EdgeOptions()
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
-driver = webdriver.Edge(options=options)
-driver.minimize_window()
-driver.get("http://192.168.0.104:80/")
+# options = webdriver.EdgeOptions()
+# options.add_experimental_option('excludeSwitches', ['enable-logging'])
+# driver = webdriver.Edge(options=options)
+# driver.minimize_window()
+# driver.get("http://192.168.0.104:80/")
 
 s = socket.socket()
 instance_class = ""
@@ -32,6 +32,7 @@ socketio = SocketIO(
 
 # Execution flow control
 pid = os.getpid()
+client_connected = threading.Event()
 
 def convert_data_to_message(data):
     data_split = str(data)
@@ -78,14 +79,24 @@ def detections_loop():
                 print(f"dists: {128 - mid_x},{128 - mid_y}")
             time.sleep(2)
 
+def socket_thread():
+    s.bind((ESP_ADDRESS, ESP_PORT))
+    s.listen(0)
+    client, _ = s.accept()
+    client_connected.set()
+
 def sigint_handler(*_):
+    print("Killing everything!")
     os.kill(pid, 9)
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, sigint_handler)
-    threading.Thread(target=detections_loop).start()
+    #threading.Thread(target=detections_loop).start()
+    s_thread = threading.Thread(target=socket_thread)
+    s_thread.start()
 
-    s.bind((ESP_ADDRESS, ESP_PORT))
-    s.listen(0)
-    client, _ = s.accept()
+    while not client_connected.is_set():
+        print("Waiting socket connection...")
+        time.sleep(5)
+
     socketio.run(app)
