@@ -107,6 +107,33 @@ export default function Home() {
       msg.includes("glass")
     ) {
       return "cup";
+    } else if (
+      msg.includes("garrafa") ||
+      msg.includes("bottle")
+    ) {
+      return "bottle";
+    } else if (
+      msg.includes("laptop") ||
+      msg.includes("notebook")
+    ) {
+      return "laptop";
+    } else if (
+      msg.includes("tv") ||
+      msg.includes("monitor")
+    ) {
+      return "tv monitor";
+    } else if (
+      msg.includes("chair") ||
+      msg.includes("cadeira")
+    ) {
+      return "cadeira";
+    } else if (
+      msg.includes("cellphone") ||
+      msg.includes("telephone") ||
+      msg.includes("smartphone") ||
+      msg.includes("telefone")
+    ) {
+      return "cellphone";
     }
 
     return "error";
