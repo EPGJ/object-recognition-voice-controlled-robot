@@ -14,11 +14,11 @@ ESP_ADDRESS = "0.0.0.0"
 ESP_PORT = 8090
 
 # Setting up selenium
-# options = webdriver.EdgeOptions()
-# options.add_experimental_option('excludeSwitches', ['enable-logging'])
-# driver = webdriver.Edge(options=options)
-# driver.minimize_window()
-# driver.get("http://192.168.0.104:80/")
+options = webdriver.EdgeOptions()
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+driver = webdriver.Edge(options=options)
+driver.minimize_window()
+driver.get("http://10.0.0.110:80/")
 
 s = socket.socket()
 instance_class = ""
@@ -49,9 +49,11 @@ def on_command(data):
 @socketio.on("setClass")
 def set_class(data):
     global instance_class
+    print(instance_class)
     instance_class = data
 
 def detections_loop():
+    global instance_class
     clicked = False
     while True:
         form = driver.find_element("id", "result")
@@ -77,7 +79,14 @@ def detections_loop():
                 mid_x = (coords[2] - coords[0]) // 2
                 mid_y = (coords[3] - coords[1]) // 2
                 print(f"dists: {128 - mid_x},{128 - mid_y}")
-            time.sleep(2)
+
+                dist_x = 128 - mid_x
+                if abs(dist_x) > 10:
+                    if dist_x > 0:
+                        client.sendall(b"1") # Go left
+                    else:
+                        client.sendall(b"2") # Go right
+            time.sleep(0.5)
 
 def sigint_handler(*_):
     print("Killing everything!")
@@ -85,7 +94,7 @@ def sigint_handler(*_):
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, sigint_handler)
-    #threading.Thread(target=detections_loop).start()
+    threading.Thread(target=detections_loop).start()
     s.bind((ESP_ADDRESS, ESP_PORT))
     s.listen(0)
     #s.settimeout(10)
