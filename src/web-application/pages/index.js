@@ -126,7 +126,7 @@ export default function Home() {
       msg.includes("chair") ||
       msg.includes("cadeira")
     ) {
-      return "cadeira";
+      return "chair";
     } else if (
       msg.includes("cellphone") ||
       msg.includes("telephone") ||
