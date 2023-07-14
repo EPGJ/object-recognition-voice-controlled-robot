@@ -18,7 +18,7 @@ options = webdriver.EdgeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Edge(options=options)
 driver.minimize_window()
-driver.get("http://10.0.0.110:80/")
+driver.get("http://10.0.0.111:80/")
 
 s = socket.socket()
 instance_class = ""
@@ -81,11 +81,11 @@ def detections_loop():
                 print(f"dists: {128 - mid_x},{128 - mid_y}")
 
                 dist_x = 128 - mid_x
-                if abs(dist_x) > 10:
-                    if dist_x > 0:
-                        client.sendall(b"1") # Go left
-                    else:
-                        client.sendall(b"2") # Go right
+                #if abs(dist_x) > 10:
+                #    if dist_x > 0:
+                #        client.sendall(b"1") # Go left
+                #    else:
+                #        client.sendall(b"2") # Go right
             time.sleep(0.5)
 
 def sigint_handler(*_):
