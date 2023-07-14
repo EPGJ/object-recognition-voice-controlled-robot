@@ -13,12 +13,15 @@ NODE_PORT = 3000
 ESP_ADDRESS = "0.0.0.0"
 ESP_PORT = 8090
 
+# Automated following
+automatic_follow = False
+
 # Setting up selenium
 options = webdriver.EdgeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Edge(options=options)
 driver.minimize_window()
-driver.get("http://10.0.0.111:80/")
+driver.get("http://10.0.0.102:80/")
 
 s = socket.socket()
 instance_class = ""
@@ -41,9 +44,13 @@ def convert_data_to_message(data):
 
 @socketio.on("comando")
 def on_command(data):
+    global automatic_follow
     for data_bytes in convert_data_to_message(data):
         client.sendall(data_bytes)
         print(data_bytes.decode())
+        if "5" in data_bytes.decode():
+            automatic_follow = not automatic_follow
+            print(f"automatic_follow = {automatic_follow}")
     time.sleep(0)
 
 @socketio.on("setClass")
@@ -52,9 +59,25 @@ def set_class(data):
     print(instance_class)
     instance_class = data
 
+def go_left():
+    client.sendall(b"1\r")
+
+def go_right():
+    client.sendall(b"2\r")
+
+def go_forward():
+    client.sendall(b"3\r")
+
+def go_backward():
+    client.sendall(b"4\r")
+
+def stop_gear():
+    client.sendall(b"0\r")
+
 def detections_loop():
     global instance_class
     clicked = False
+    past_text = ""
     while True:
         form = driver.find_element("id", "result")
         if form.text == "" and not clicked:
@@ -64,8 +87,9 @@ def detections_loop():
             clicked = True
 
         text = form.text
-        if text == "":
+        if text == None or text == "" or text == past_text:
             continue
+        past_text = text
 
         detections = text.split("] ")
         for detection in detections:
@@ -74,19 +98,16 @@ def detections_loop():
                 continue
             category = splitted_text[0].split("0")[-1]
             coords = (int(splitted_text[2]), int(splitted_text[3]), int(splitted_text[4]), int(splitted_text[5].split("[")[0]))
-            if category == instance_class:
+            if category == instance_class and automatic_follow:
                 print("Found object!")
-                mid_x = (coords[2] - coords[0]) // 2
-                mid_y = (coords[3] - coords[1]) // 2
-                print(f"dists: {128 - mid_x},{128 - mid_y}")
-
-                dist_x = 128 - mid_x
-                #if abs(dist_x) > 10:
-                #    if dist_x > 0:
-                #        client.sendall(b"1") # Go left
-                #    else:
-                #        client.sendall(b"2") # Go right
-            time.sleep(0.5)
+                mid_x = (coords[0] + coords[2] // 2)
+                mid_y = (coords[1] + coords[3] // 2)
+                print(f"dists: {mid_x},{mid_y}")
+                if mid_x > 200:
+                    go_right()
+                elif mid_x < 150:
+                    go_left()
+                stop_gear()
 
 def sigint_handler(*_):
     print("Killing everything!")

@@ -12,7 +12,7 @@
 // #define MY_SSID "Oi Fibra"
 // #define MY_PASSWORD "95640138"
 
-#define MY_SCKT_HOST "10.0.0.109"
+#define MY_SCKT_HOST "10.0.0.104"
 #define MY_SCKT_PORT 8090
 
 const char* ssid = MY_SSID;

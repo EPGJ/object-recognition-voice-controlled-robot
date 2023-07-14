@@ -122,7 +122,7 @@ export default function Home() {
       msg.includes("smartphone") ||
       msg.includes("telefone")
     ) {
-      return "cellphone";
+      return "cell phone";
     }
 
     return "error";
