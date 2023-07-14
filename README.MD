@@ -104,6 +104,5 @@ No diretório `src/motor-embedded-code` está o código em arquivo único a ser 
 * Power Bank
 * Jumpers
 * Protoboard
-* Circuito regulador de tensão (para 5V na entrada das ESP32)
-* 2 interruptores
+* interruptor
 * 2 motores PWD
