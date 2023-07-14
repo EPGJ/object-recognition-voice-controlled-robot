@@ -8,6 +8,7 @@ const FORWARD = 3;
 const BACKWARD = 4;
 const LEFT = 1;
 const RIGHT = 2;
+const AUTOMATIC = 5;
 
 export default function Home() {
   const [voiceListening, setVoiceListening] = useState(false);
@@ -19,7 +20,7 @@ export default function Home() {
     });
   }, []);
   useEffect(() => {}, voiceListening);
- 
+
   function sendSocket(comando) {
     console.log(comando);
     socket.emit("comando", comando);
@@ -107,25 +108,13 @@ export default function Home() {
       msg.includes("glass")
     ) {
       return "cup";
-    } else if (
-      msg.includes("garrafa") ||
-      msg.includes("bottle")
-    ) {
+    } else if (msg.includes("garrafa") || msg.includes("bottle")) {
       return "bottle";
-    } else if (
-      msg.includes("laptop") ||
-      msg.includes("notebook")
-    ) {
+    } else if (msg.includes("laptop") || msg.includes("notebook")) {
       return "laptop";
-    } else if (
-      msg.includes("tv") ||
-      msg.includes("monitor")
-    ) {
+    } else if (msg.includes("tv") || msg.includes("monitor")) {
       return "tv monitor";
-    } else if (
-      msg.includes("chair") ||
-      msg.includes("cadeira")
-    ) {
+    } else if (msg.includes("chair") || msg.includes("cadeira")) {
       return "chair";
     } else if (
       msg.includes("cellphone") ||
@@ -156,58 +145,79 @@ export default function Home() {
       </Head>
       <div className={styles.camControl}>
         {/* <iframe src="http://localhost:8080" id="espapp"></iframe> */}
-        <iframe src="http://10.0.0.110:80/" id="espapp"></iframe>
+        <iframe src="http://10.0.0.102:80/" id="espapp"></iframe>
       </div>
-      <div className={styles.voiceButton}>
-        <button
-          style={{
-            background: recButtonColor,
-            color: recTextColor,
-          }}
-          onClick={() => speechApi.toggle()}
-        >
-          <b>Falar</b>
-        </button>
-      </div>
-
-      <div className={styles.carControl}>
-        <div className={styles.upperButton}>
-          <button
-            onMouseDown={() => onMouseDown(FORWARD)}
-            onMouseUp={onMouseUp}
+      <div className={styles.controlContainer}>
+        <div className={styles.topButtonsContainer}>
+          <div className={styles.voiceButton}>
+            <button
+              style={{
+                background: recButtonColor,
+                color: recTextColor,
+                marginRight: "8px",
+                marginBottom: "8px",
+              }}
+              onClick={() => speechApi.toggle()}
+            >
+              <b>Falar</b>
+            </button>
+          </div>
+          <div
+            className={styles.stop}
+            style={{ marginRight: "8px", marginBottom: "8px" }}
           >
-            FRENTE
-          </button>
+            <button onClick={() => sendSocket(STOP)}>Parar</button>
+          </div>
+
+          <div>
+            <button
+              onClick={() => sendSocket(AUTOMATIC)}
+              style={{ marginRight: "8px", marginBottom: "8px" }}
+            >
+              Iniciar modo automático
+            </button>
+          </div>
         </div>
 
-        <div className={styles.middleButton}>
-          <button
-            onMouseDown={() => onMouseDown(LEFT)}
-            onMouseUp={onMouseUp}
-            onTouchStart={() => onMouseDown(LEFT)}
-            onTouchEnd={onMouseUp}
-          >
-            ESQUERDA
-          </button>
-          <button
-            onMouseDown={() => onMouseDown(RIGHT)}
-            onMouseUp={onMouseUp}
-          >
-            DIREITA
-          </button>
-        </div>
+        <div className={styles.controlButtons}>
+          <div className={styles.upperButton}>
+            <button
+              onMouseDown={() => onMouseDown(FORWARD)}
+              onMouseUp={onMouseUp}
+              style={{ marginLeft: "55px", marginBottom: "8px" }}
+            >
+              Frente
+            </button>
+          </div>
 
-        <div className={styles.lowerButton}>
-          <button
-            onMouseDown={() => onMouseDown(BACKWARD)}
-            onMouseUp={onMouseUp}
-          >
-            TRÁS
-          </button>
+          <div className={styles.middleButton}>
+            <button
+              onMouseDown={() => onMouseDown(LEFT)}
+              onMouseUp={onMouseUp}
+              onTouchStart={() => onMouseDown(LEFT)}
+              onTouchEnd={onMouseUp}
+              style={{ marginRight: "8px", marginBottom: "8px" }}
+            >
+              Esquerda
+            </button>
+            <button
+              onMouseDown={() => onMouseDown(RIGHT)}
+              onMouseUp={onMouseUp}
+            >
+              Direita
+            </button>
+          </div>
+
+          <div className={styles.lowerButton}>
+            <button
+              onMouseDown={() => onMouseDown(BACKWARD)}
+              onMouseUp={onMouseUp}
+              style={{ marginLeft: "60px", marginBottom: "8px" }}
+            >
+              Trás
+            </button>
+          </div>
         </div>
-      </div>
-      <div className={styles.stop}>
-        <button onClick={() => sendSocket(STOP)}>Para</button>
       </div>
     </div>
   );
