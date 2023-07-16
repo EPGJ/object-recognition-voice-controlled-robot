@@ -14,6 +14,10 @@ export default function Home() {
   const [voiceListening, setVoiceListening] = useState(false);
   const [recButtonColor, setRecButtonColor] = useState("#f5f5f5");
   const [recTextColor, setRecTextColor] = useState("#f50000");
+
+  const [followBtnColor, setFollowBtnColor] = useState("white");
+  const [followBtnText, setFollowBtnText] = useState("Habilitar");
+
   useEffect(() => {
     socket.on("carrinho", (data) => {
       console.log(data);
@@ -136,6 +140,13 @@ export default function Home() {
     }
   }
 
+  function toggleFollowBtnColor() {
+    setFollowBtnColor(followBtnColor === "white" ? "lightgray" : "white");
+    setFollowBtnText(
+      followBtnText === "Habilitar" ? "Desabilitar" : "Habilitar"
+    );
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -171,10 +182,17 @@ export default function Home() {
 
           <div>
             <button
-              onClick={() => sendSocket(AUTOMATIC)}
-              style={{ marginRight: "8px", marginBottom: "8px" }}
+              onClick={() => {
+                sendSocket(AUTOMATIC);
+                toggleFollowBtnColor();
+              }}
+              style={{
+                marginRight: "8px",
+                marginBottom: "8px",
+                // background: followBtnColor,
+              }}
             >
-              Iniciar modo automático
+              {followBtnText} modo automático
             </button>
           </div>
         </div>
