@@ -18,7 +18,7 @@ De modo geral, podemos observar que existem quatro partes principais do projeto.
 
 ## Front-end
 
-Feito em JavaScript (Node.JS)
+Feito em JavaScript (Node.JS). Localizado em [`src/web-application`](src/web-application).
 
 É onde o usuário interage com o sistema. São realizadas capturas de comandos de voz por meio da funcionalidade nativa do JavaScript. A captura de voz é ativada ao clicar no botão "Falar", o botão ficará vermelho e indicará que o usuário está sendo "ouvido", a mensagem da fala é tratada e a string correspondente ao comando enviada tanto ao servidor da ESP32-CAM quanto ao back-end. Os comandos suportadas seguem o padrão "procure uma xícara", "encontre uma pessoa" e afins.
 
@@ -43,7 +43,7 @@ npm run dev
 
 ## Servidor da ESP32-CAM
 
-Desenvolvido em C++
+Desenvolvido em C++. Localizado em [`src/cam-embedded-code`](src/cam-embedded-code).
 
 A ESP32-CAM é responsável por receber os comandos de voz (via EventListener) para localizar os objetos. Utilizando uma inteligência artificial pré-treinada (COCO SSD), ele realiza o reconhecimento dos objetos.
 
@@ -56,7 +56,7 @@ Envie o código encontrado em `src/cam-embedded-code` para uma ESP32-CAM (certif
 
 ## Back-end
 
-Feito em Python 
+Feito em Python. Localizado em [`src/car-server`](src/car-server).
 
 É onde são recebidos os comandos de direção mandados pelo front-end por meio de comunicação de socket (Flask em conjunto com Socket.IO) e onde é definido se a ESP32-CAM achou o objeto que está sendo procurado, com auxílio do Selenium. Além disso, é onde está o algoritmo de busca autonoma pelo objeto.
 
@@ -71,7 +71,7 @@ No diretório `src/car-server` execute `python3 main.py` tendo as dependências 
 
 ## ESP32 (Controle dos motores)
 
-Desenvolvido em C++
+Desenvolvido em C++. Localizado em [`src/motor-embedded-code`](src/motor-embedded-code).
 
 O módulo é responsável por receber os comandos de direção enviados pelo back-end através de comunicação de socket e executar toda a movimentação do carro. Neste módulo, não são enviados comandos, apenas recebidos e processados.
 
@@ -82,14 +82,14 @@ O módulo é responsável por receber os comandos de direção enviados pelo bac
 
 No diretório `src/motor-embedded-code` está o código em arquivo único a ser instalado na ESP32, é necessário inserir no código o IPv4 do computador onde rodam o back-end e o front-end e a porta do back-end para que seja feita a comunicação corretamente.
 
-# Dependências
+# Requisitos
 
 * Rede Wi-Fi (deve ser uma rede 2.4GHz, não funciona em rede 5GHz e a mesma rede deve ser usada em todos os módulos);
 * Computador (Para rodar o back-end e o front-end);
 * ESP32 (Para rodar o código do motor);
 * ESP32-CAM (Para rodar o código da camera);
 
-## Dependências de software
+## Requisitos de software
 
 * Node.JS;
 * Python3.10
@@ -99,10 +99,11 @@ No diretório `src/motor-embedded-code` está o código em arquivo único a ser 
 
 ## Hardware utilizado (além de sistemas embarcados)
 * Chassi do robô e rodas
-* Ponte H
+* Ponte H L298N
 * 2 baterias 9v
-* Power Bank
+* PowerBank
 * Jumpers
 * Protoboard
-* interruptor
-* 2 motores PWD
+* Interruptor
+* 2 motores DC 3-6V PWD
+
