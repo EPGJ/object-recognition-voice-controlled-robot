@@ -21,7 +21,7 @@ options = webdriver.EdgeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Edge(options=options)
 driver.minimize_window()
-driver.get("http://10.0.0.102:80/")
+driver.get("http://10.0.0.108:80/")
 
 s = socket.socket()
 instance_class = ""
@@ -105,7 +105,7 @@ def detections_loop():
                 print(f"dists: {mid_x},{mid_y}")
                 if mid_x > 200:
                     go_right()
-                elif mid_x < 150:
+                elif mid_x < 120:
                     go_left()
                 stop_gear()
 

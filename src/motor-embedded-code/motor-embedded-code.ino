@@ -10,7 +10,7 @@
 // #define MY_SSID "Oi Fibra"
 // #define MY_PASSWORD "95640138"
 
-#define MY_SCKT_HOST "10.0.0.101"
+#define MY_SCKT_HOST "10.0.0.105"
 #define MY_SCKT_PORT 8090
 
 const char* ssid = MY_SSID;
@@ -198,7 +198,7 @@ void init_motors() {
 
   pinMode(LIGHT_PIN, OUTPUT);    
   ledcAttachPin(LIGHT_PIN, PWMLightChannel);
-  ledcWrite(PWMSpeedChannel, 255);
+  ledcWrite(PWMSpeedChannel, 145);
 
   Serial.println("Fim das configurações");
 }
