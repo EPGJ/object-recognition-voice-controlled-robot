@@ -1,19 +1,17 @@
 # Carro controlado por voz
-**Projeto por: Elias Pereira Gomes Junior, José Jorge M. Uliana, Maria Júlia D. M. Nolasco**
+**Autores: Elias Pereira Gomes Junior, José Jorge M. Uliana, Maria Júlia D. M. Nolasco**
 
-O presente repositório objetiva armazenar os códigos e arquivos utilizados no carro controlado por voz. Tal projeto está sendo desenvolvido para a disciplina de Projeto Integrado de Computação II.
-
-O projeto se trata de um robô autônomo capaz de seguir objetos informados pelo usuário via comandos de voz (via interface web).
+O projeto se trata de um robô semi-autônomo capaz de reconhecer objetos e comandos de voz. Ele foi desenvolvido na disciplina de Projeto Integrado de Computação II, ofertado na Universidade Federal do Espírito Santo. 
 
 # Arquitetura do projeto
 ![Diagrama da arquitetura do projeto](doc/diagram.png "Diagrama do projeto")
 
-De modo geral, podemos observar que existem quatro partes principais do projeto.
+De modo geral, podemos observar que existem quatro partes principais no projeto.
 
 1. O Front-End: Responsável pela interação do usuário com o sistema. Aqui acontecem as interações como comando de voz e comandos direcionais do robô;
-2. O Back-End: Responsável pelo tratamento das entradas dadas pelo usuário no Front-End e sua manipulação, envia comandos à ESP32 do controle dos motores, quando necessário. Também é responsável pela automação do movimento do robô;
-3. O servidor da ESP32-CAM: Responsável pelo envio das imagens da camera e detecção de objetos;
-4. ESP32 do controle de motores: Recebe comandos simples e os executa;
+2. O Back-End: Responsável pelo tratamento das entradas dadas pelo usuário no Front-End e sua manipulação, envia comandos à ESP32 do controle dos motores, quando necessário. Também é responsável pela parte autônoma do robô;
+3. ESP32-CAM: Responsável por implementar um servidor web dedicado ao reconhecimento de objetos.
+4. ESP32: Responsável por executar os comandos vindos do Back-End.
 
 # Partes do projeto
 
@@ -59,7 +57,7 @@ Envie o código encontrado em `src/cam-embedded-code` para uma ESP32-CAM (certif
 
 Feito em Python. Localizado em [`src/car-server`](src/car-server).
 
-É onde são recebidos os comandos de direção mandados pelo front-end por meio de comunicação de socket (Flask em conjunto com Socket.IO) e onde é definido se a ESP32-CAM achou o objeto que está sendo procurado, com auxílio do Selenium. Além disso, é onde está o algoritmo de busca autonoma pelo objeto.
+É onde são recebidos os comandos de direção mandados pelo front-end por meio de comunicação de socket (Flask em conjunto com Socket.IO) e onde é definido se a ESP32-CAM achou o objeto que está sendo procurado, com auxílio do Selenium. Além disso, é onde está o algoritmo que trata a parte autonoma do robô.
 
 ### Comunica-se com
 * ESP32 do controle dos motores, por meio de socket;
@@ -101,7 +99,7 @@ No diretório `src/motor-embedded-code` está o código em arquivo único a ser 
 ## Hardware utilizado (além de sistemas embarcados)
 * Chassi do robô e rodas
 * Ponte H L298N
-* 2 baterias 9v
+* 1 baterias 9v
 * PowerBank
 * Jumpers
 * Protoboard
