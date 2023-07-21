@@ -1,4 +1,5 @@
 # Carro controlado por voz
+**Projeto por: Elias Pereira Gomes Junior, José Jorge M. Uliana, Maria Júlia D. M. Nolasco**
 
 O presente repositório objetiva armazenar os códigos e arquivos utilizados no carro controlado por voz. Tal projeto está sendo desenvolvido para a disciplina de Projeto Integrado de Computação II.
 
@@ -107,3 +108,11 @@ No diretório `src/motor-embedded-code` está o código em arquivo único a ser 
 * Interruptor
 * 2 motores DC 3-6V PWD
 
+# Referências:
+
+**Vídeos do YouTube:**
+* ["Camera Car With Pan Tilt Control | ESP32Cam" por hash include electronics](https://www.youtube.com/watch?v=tyY7AN132Xs)
+* ["ESP32-CAM Tracking Car (tfjs coco-ssd)" por fuchungyi](https://www.youtube.com/watch?v=0h5jZWqm-eU)
+
+**Outros repositórios:**
+* [fustyles/Arduino](https://github.com/fustyles/Arduino/tree/master/ESP32-CAM_Car/ESP32-CAM_CAR_2pwm_coco-ssd_TrackingCar)
